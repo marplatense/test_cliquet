@@ -7,7 +7,9 @@ import os
 import sys
 import zipfile
 
-from cliquet.utils import msec_time
+from kinto.core.scripts import migrate
+from kinto.core.utils import msec_time
+from pyramid.paster import bootstrap
 from pyramid_sqlalchemy import Session
 from sqlalchemy import engine_from_config
 import transaction
@@ -154,6 +156,7 @@ def main(argv=sys.argv):
     settings = get_appsettings(config_uri)
     engine = engine_from_config(settings, 'sqlalchemy.')
     Session.configure(bind=engine)
+    migrate(bootstrap(config_uri))
     logger.info('Drop and create tables')
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)

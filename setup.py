@@ -9,7 +9,7 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
     CHANGES = f.read()
 
 requires = [
-    'cliquet',
+    'kinto',
     'psycopg2',
     'pyramid',
     'pyramid_sqlalchemy',

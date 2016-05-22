@@ -1,4 +1,4 @@
-from cliquet.resource.sqlalchemy import Base
+from kinto.core.resource.sqlalchemy import Base
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import String, DateTime, Boolean, Integer
 from sqlalchemy.orm import relationship

@@ -4,7 +4,7 @@ import logging
 from pyramid.config import Configurator
 from pyramid.renderers import JSON
 
-import cliquet
+from kinto.core import initialization, install_middlewares
 
 logger = logging.getLogger(__name__)
 
@@ -20,8 +20,8 @@ def main(global_config, **settings):
 
     json_renderer.add_adapter(datetime.datetime, datetime_adapter)
     config.add_renderer('json', json_renderer)
-    cliquet.initialize(config)
+    initialization.initialize(config)
 
     config.scan()
     app = config.make_wsgi_app()
-    return cliquet.install_middlewares(app, settings)
+    return install_middlewares(app, settings)
