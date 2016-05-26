@@ -1,7 +1,20 @@
+import colander
+from colanderalchemy import SQLAlchemySchemaNode
 from kinto.core.resource.sqlalchemy import Base
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import String, DateTime, Boolean, Integer
 from sqlalchemy.orm import relationship
+
+from .datatypes import Password
+
+key = SQLAlchemySchemaNode.sqla_info_key
+
+
+class User(Base):
+    __tablename__ = "users"
+    name = Column(String, nullable=False, info={key: {'repr': True}})
+    email = Column(String, nullable=False, unique=True, info={key: {'validator': colander.Email, 'repr': True}})
+    password = Column(String, nullable=False, info={key: {'typ': Password}})
 
 
 class Continent(Base):

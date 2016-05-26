@@ -13,6 +13,7 @@ requires = [
     'psycopg2',
     'pyramid',
     'pyramid_sqlalchemy',
+    'pyramid_oauth2_provider',
     'pyramid_tm',
     'SQLAlchemy',
     'waitress',
@@ -21,7 +22,8 @@ requires = [
 test_requires = [
     'pytest',
     'factory_boy',
-    'faker'
+    'faker',
+    'pytest-capturelog'
 ]
 
 setup(name='test_cliquet',

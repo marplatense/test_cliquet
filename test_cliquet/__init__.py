@@ -13,6 +13,7 @@ def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     config = Configurator(settings=settings)
+    config.include('pyramid_sqlalchemy')
     json_renderer = JSON()
 
     def datetime_adapter(obj, request):
