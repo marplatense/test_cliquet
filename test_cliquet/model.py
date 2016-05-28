@@ -1,3 +1,4 @@
+import base64
 import colander
 from colanderalchemy import SQLAlchemySchemaNode
 from kinto.core.resource.sqlalchemy import Base
@@ -5,16 +6,33 @@ from sqlalchemy import Column, ForeignKey
 from sqlalchemy import String, DateTime, Boolean, Integer
 from sqlalchemy.orm import relationship
 
-from .datatypes import Password
-
 key = SQLAlchemySchemaNode.sqla_info_key
 
 
 class User(Base):
     __tablename__ = "users"
     name = Column(String, nullable=False, info={key: {'repr': True}})
-    email = Column(String, nullable=False, unique=True, info={key: {'validator': colander.Email, 'repr': True}})
-    password = Column(String, nullable=False, info={key: {'typ': Password}})
+    email = Column(String, nullable=False, unique=True, info={key: {'validator': colander.Email(), 'repr': True}})
+    password = Column(String, nullable=False)
+
+    @staticmethod
+    def password_preparer(value):
+        return value + ':000'
+
+    @staticmethod
+    def password_validator(node, value):
+        if not value.startswith('abc:'):
+            raise colander.Invalid(node, msg='Invalid password token', value=value)
+        return True
+
+    @staticmethod
+    def global_preparer(value):
+        value['password'] = base64.b64encode(value['password'].encode('ascii'))
+        return value
+
+    @staticmethod
+    def global_validator(*args):
+        pass
 
 
 class Continent(Base):
